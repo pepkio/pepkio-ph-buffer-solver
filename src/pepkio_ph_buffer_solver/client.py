@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """HTTP client for the Pepkio ph-buffer-solver tool."""
 
 from __future__ import annotations

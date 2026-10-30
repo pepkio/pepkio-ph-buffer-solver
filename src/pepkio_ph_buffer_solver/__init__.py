@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Pepkio pH Buffer Solver Python Client."""
 
 from .client import PepkioClient
