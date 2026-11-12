@@ -35,6 +35,20 @@ def live_client(request):
     api_key = _api_key_for(base_url)
     if not api_key:
         pytest.skip(f"No API key for {env_name} (set LOCAL_PEPKIO_API_KEY or PEPKIO_API_KEY)")
+    if "localtest.me" in base_url:
+        import httpx
+
+        try:
+            r = httpx.get(
+                f"{base_url}/api/tools/v1/tools/ph-buffer-solver/manifest",
+                headers={"Authorization": f"Bearer {api_key}"},
+                timeout=2.0,
+                verify=False,
+            )
+            if r.status_code >= 500:
+                pytest.skip(f"Local dev server at {base_url} returned {r.status_code}")
+        except httpx.RequestError:
+            pytest.skip(f"Local dev server at {base_url} is unreachable")
     with PepkioClient(api_key=api_key, base_url=base_url) as client:
         yield client
 
